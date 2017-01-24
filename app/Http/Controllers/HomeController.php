@@ -41,6 +41,6 @@ class HomeController extends Controller
             ->groupBy(DB::raw("DAY(date_created)"))
             ->get();
 //        dd($subscriptions);
-        return view('index', ['payments'=>$payments, 'subscriptions'=>$subscriptions]);
+        return response(['payments'=>$payments, 'subscriptions'=>$subscriptions], '200');
     }
 }
