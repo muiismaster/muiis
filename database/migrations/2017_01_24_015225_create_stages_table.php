@@ -16,8 +16,6 @@ class CreateStagesTable extends Migration
         Schema::create('stages', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('crop_id')->unsigned();
-            $table->foreign('crop_id')->references('id')->on('crops')
-                ->onUpdate('cascade')->onDelete('cascade');
             $table->string('stage_definition');
             $table->string('duration');
             $table->string('lower_bound');

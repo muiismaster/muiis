@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Season;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class SeasonController extends Controller
@@ -55,7 +57,10 @@ class SeasonController extends Controller
         //If validation fail send back the Input with errors
         if ($validation->fails()) {
             //withInput keep the users info
-            return $validation->messages();
+            //return $validation->messages();
+            return Response::json([
+                'errors' => $validation->messages
+            ], 500); // Status code here
         } else {
             $season = new Season();
             $season->start_day = $request['start_day'];
@@ -64,7 +69,10 @@ class SeasonController extends Controller
             $season->crop_id = $request['crop_id'];
             $season->save();
 
-            return $season->toJson();// remove to JSON incase of error
+            //return $season->toJson();// remove to JSON incase of error
+            return Response::json([
+                'season' => $season
+            ], 200); // Status code here
         }
     }
 
@@ -100,6 +108,10 @@ class SeasonController extends Controller
     public function update(Request $request, $id)
     {
         //
+    DB::table('seasons')->update(['start_day'=>$request['start_day'], 'end_day'=>$request['end_day'], 'date_created'=>$request['date_created'], 'crop_id'=>$request['crop_id']])
+            ->where('seasons.id', $id);
+
+        return Season::findOrFail($id);
 
     }
 
