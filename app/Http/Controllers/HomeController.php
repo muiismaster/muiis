@@ -27,7 +27,7 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function dash(){
+    public function dashboard(){
         $payments = DB::table('payments')
             ->select(DB::raw("(SUM(amount)) as payments"), DB::raw("YEAR(date_created) as year"), DB::raw("MONTH(date_created) as month"), DB::raw("DAY(date_created) as day"))
             ->orderBy('date_created')
