@@ -12,10 +12,16 @@
 */
 
 Route::get('/', function () {
+    return view('auth.login');
+});
+Route::get('/index', function () {
     return view('index');
 });
 
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
 Route::get('/api/v1/farmers/{page?}', 'FarmerController@index');
 Route::post('/api/v1/farmers', 'FarmerController@store');
 Route::post('/api/v1/farmers/{id}', 'FarmerController@update');
@@ -39,4 +45,5 @@ Route::get('/api/v1/crops', 'SmsController@crops');
 Route::get('/api/v1/farmersSummary', 'DashboardController@farmersSummary');
 Route::get('/api/v1/subscriptionSummary', 'DashboardController@subscriptionSummary');
 Route::get('/api/v1/paymentsSummary', 'DashboardController@paymentsSummary');
+
 
