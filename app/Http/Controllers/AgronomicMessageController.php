@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AgronomicMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class AgronomicMessageController extends Controller
@@ -108,6 +109,38 @@ class AgronomicMessageController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validation = Validator::make(Input::all(),
+            array(
+                'unfavourable_lower_bound_message' => 'required',
+                'unfavourable_lower_bound' => 'required',
+                'parameters' => 'required',
+                'optional_lower' => 'required',
+                'optional_message' => 'required',
+                'unfavourable_upper_bound_message' => 'required',
+                'unfavourable_upper_bound' => 'required',
+                'stage_id' => 'required|exists:stages,id',
+            )
+        ); //close validation
+
+        //If validation fail send back the Input with errors
+        if ($validation->fails()) {
+            //withInput keep the users info
+            return Response::json([
+                'errors' => $validation->messages
+            ], 500); // Status code here
+        } else {
+            $agronomicMessage = AgronomicMessage::findOrFail($id);
+
+            $agronomicMessage->update(["stage_id"=>$request['stage_id'], "parameters"=>$request['parameters'],
+            "unfavourable_lower_bound"=>$request['unfavourable_lower_bound'], "unfavourable_lower_bound_message"=>$request['unfavourable_lower_bound_message'],
+            "optional_lower"=>$request['optional_lower'], "optional_message"=>$request['optional_message'], "unfavourable_upper_bound"=>$request['unfavourable_upper_bound'],
+            "unfavourable_upper_bound_message"=>$request['unfavourable_upper_bound_message']]);
+
+            return Response::json([
+                'agronomicMessage' => $agronomicMessage
+            ], 200); // Status code here
+        }
+
     }
 
     /**

@@ -16,8 +16,6 @@ class CreateAgronomicMessagesTable extends Migration
         Schema::create('agronomic_messages', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('stage_id')->unsigned();
-            $table->foreign('stage_id')->references('id')->on('stages')
-                ->onUpdate('cascade')->onDelete('cascade');
             $table->string('parameters');
             $table->string('unfavourable_lower_bound');
             $table->string('unfavourable_lower_bound_message');
