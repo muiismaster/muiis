@@ -57,7 +57,40 @@
             return sum;
         };
     })
+    
+.filter('stripSlashes', function() {
+        return function(str) {
+            if (typeof(str) === 'undefined') {
+                return str;
+            }
+
+            str = str.replace(/\\'/g, '\'');
+            str = str.replace(/\\"/g, '"');
+            str = str.replace(/\\0/g, '\0');
+            str = str.replace(/\\\\/g, '\\');  
+
+            return str;
+        };
+    })
 .constant('API_URL', 'http://localhost:8000/api/v1/');
 })();
 
 // Other libraries are loaded dynamically in the config.js file using the library ocLazyLoad
+/*
+function addslashes(str) {
+    str = str.replace(/\\/g, '\\\\');
+    str = str.replace(/\'/g, '\\\'');
+    str = str.replace(/\"/g, '\\"');
+    str = str.replace(/\0/g, '\\0');
+    return str;
+}
+ 
+function stripslashes(str) {
+    str = str.replace(/\\'/g, '\'');
+    str = str.replace(/\\"/g, '"');
+    str = str.replace(/\\0/g, '\0');
+    str = str.replace(/\\\\/g, '\\');
+    return str;
+}
+
+*/
